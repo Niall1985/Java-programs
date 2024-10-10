@@ -192,3 +192,63 @@ public class Main {
         }
     }
 }
+
+
+
+// Queency wants to write a program to validate the email address and display suitable exceptions if there is a mistake.
+
+
+
+// Create 3 custom exception classes as below
+
+// DotException
+// AtTheRateException
+// DomainException
+
+
+// A typical email address should have a " . " or "@" character, and the domain name should be valid. Valid domain names for practice are 'in', 'com', 'net', or 'biz'.
+
+
+
+// Display an Invalid Dot usage, Invalid @ usage, or Invalid Domain message based on the email ID.
+
+
+
+// Get the email address from the user, validate the email by checking the above-mentioned criteria, and print the validity status of the input email address.
+
+// Input format :
+// The input consists of a string representing the email to be validated.
+
+// Output format :
+// If the email is valid, print "Valid email address".
+
+// If there is a dot exception, print "DotException: Invalid Dot usage", followed by "Invalid email address".
+
+// If there is a rate exception, print "AtTheRateException: Invalid @ usage", followed by "Invalid email address".
+
+// If there is a domain exception, print "DomainException: Invalid Domain", followed by "Invalid email address".
+
+
+
+// Refer to the sample output for the formatting specifications.
+
+// Sample test cases :
+// Input 1 :
+// sample@gmail.com
+// Output 1 :
+// Valid email address
+// Input 2 :
+// sample@gmail.com.
+// Output 2 :
+// DotException: Invalid Dot usage
+// Invalid email address
+// Input 3 :
+// sample@g@mail.com
+// Output 3 :
+// AtTheRateException: Invalid @ usage
+// Invalid email address
+// Input 4 :
+// sample@gmail.con
+// Output 4 :
+// DomainException: Invalid Domain
+// Invalid email address
