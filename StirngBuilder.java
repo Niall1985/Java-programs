@@ -119,3 +119,35 @@ public class Main {
         }
     }
 }
+
+
+
+
+
+// You are using Java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+  
+        Scanner scanner = new Scanner(System.in);
+        
+     
+        String input = scanner.nextLine();
+        
+        StringBuilder uniqueChars = new StringBuilder();
+        
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            
+            if (uniqueChars.indexOf(String.valueOf(currentChar)) == -1) {
+                uniqueChars.append(currentChar);
+            }
+        }
+    
+        System.out.println(uniqueChars.toString());
+        
+
+        scanner.close();
+    }
+}
