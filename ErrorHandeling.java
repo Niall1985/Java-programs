@@ -33,3 +33,48 @@ public class Main{
         }
     }
 }
+
+
+
+
+
+
+
+// You are using Java
+import java.util.Scanner;
+
+class MyException extends Exception{
+    public MyException(String message){
+        super(message);
+    }
+}
+
+public class Main{
+    public static void main(String[] args){
+        Scanner s = new Scanner(System.in);
+        try{
+            String input = s.nextLine();
+            String[] parts = input.split(" ");
+            if(parts.length != 2){
+                throw new MyException("Invalid input. Please enter valid exam scores.");
+            }
+            else{
+                double n1 = Double.parseDouble(parts[0]);
+                double n2 = Double.parseDouble(parts[1]);
+                double avg = (n1+n2)/2;
+                if(avg>=60){
+                    System.out.printf("Your average grade is %.1f. You Passed the exam.", avg);
+                }
+                else{
+                    System.out.printf("Your average grade is %.1f. You Failed the exam.", avg);
+                }
+            }
+        }
+        catch(MyException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Invalid input. Please enter valid exam scores.");
+        }
+    }
+}
