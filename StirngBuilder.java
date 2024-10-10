@@ -151,3 +151,37 @@ public class Main {
         scanner.close();
     }
 }
+
+
+
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String dateString1 = scanner.next();
+        LocalDate date1 = parseDate(dateString1);
+
+        String dateString2 = scanner.next();
+        LocalDate date2 = parseDate(dateString2);
+
+        long daysDifference = calculateDaysDifference(date1, date2);
+
+        System.out.println(daysDifference + " days");
+
+        scanner.close();
+    }
+
+    private static LocalDate parseDate(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(dateString, formatter);
+    }
+
+    private static long calculateDaysDifference(LocalDate date1, LocalDate date2) {
+        return Math.abs(date1.toEpochDay() - date2.toEpochDay());
+    }
+}
