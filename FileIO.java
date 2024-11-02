@@ -171,3 +171,59 @@ public class Main{
         System.out.printf("%s", modifiedString);
     }
 }
+
+
+//serialization
+
+// You are using Java
+import java.util.Scanner;
+import java.io.*;
+
+class Person implements Serializable{
+    private static final long serialVersionUID = 1L;
+    public int age;
+    
+    public Person(int age){
+        this.age = age;
+    }
+    
+    public int getage(){
+        return age;
+    }
+    
+    public String getagegroup(){
+        if(age>=0 && age<=12){
+            return "Kid";
+        }
+        else if(age>=13 && age<=19){
+            return "Teen";
+        }
+        else if(age>=20){
+            return "Adult";
+        }
+        return null;
+    }
+}
+
+public class Main{
+    public static void main(String[] args){
+        Scanner s = new Scanner(System.in);
+        int age = s.nextInt();
+        Person person = new Person(age);
+        try(FileOutputStream fileout = new FileOutputStream("Person.ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileout)){
+            out.writeObject(person);
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        
+        try(FileInputStream fileIn = new FileInputStream("Person.ser");
+        ObjectInputStream in = new ObjectInputStream(fileIn)){
+            Person deserializedPerson = (Person) in.readObject();
+            System.out.println(deserializedPerson.getagegroup());
+        }
+        catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+}
