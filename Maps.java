@@ -1,36 +1,36 @@
-// // // // You are using Java
-// // // import java.util.*;
+// You are using Java
+import java.util.*;
 
-// // // public class Main{
-// // //     public static void main(String[] args){
-// // //         Scanner s = new Scanner(System.in);
-// // //         int inputs = s.nextInt();
-// // //         s.nextLine();
+public class Main{
+    public static void main(String[] args){
+        Scanner s = new Scanner(System.in);
+        int inputs = s.nextInt();
+        s.nextLine();
         
-// // //         Map<String, List<String>> m = new HashMap<>();
-// // //         for(int i = 0 ; i < inputs ; i++){
-// // //             String word = s.nextLine();
-// // //             char []text = word.toCharArray();
-// // //             Arrays.sort(text);
-// // //             String newStr = new String(text);
-// // //             m.computeIfAbsent(newStr, k->new ArrayList<>()).add(word);
-// // //         }
+        Map<String, List<String>> m = new HashMap<>();
+        for(int i = 0 ; i < inputs ; i++){
+            String word = s.nextLine();
+            char []text = word.toCharArray();
+            Arrays.sort(text);
+            String newStr = new String(text);
+            m.computeIfAbsent(newStr, k->new ArrayList<>()).add(word);
+        }
         
-// // //         List<Map.Entry<String, List<String>>> arr = new ArrayList<>(m.entrySet());
-// // //         arr.sort((a,b)->b.getValue().size() - a.getValue().size());
+        List<Map.Entry<String, List<String>>> arr = new ArrayList<>(m.entrySet());
+        arr.sort((a,b)->b.getValue().size() - a.getValue().size());
         
-// // //         for(Map.Entry<String, List<String>>str : arr){
-// // //             List<String>anagrams = str.getValue();
-// // //             Collections.sort(anagrams);
-// // //             System.out.printf("%d : ", anagrams.size());
-// // //             for(int i = 0 ; i < anagrams.size() ; i++){
-// // //                 System.out.printf("%s ", anagrams.get(i));
-// // //             }
-// // //             System.out.printf("\n");
-// // //         }
+        for(Map.Entry<String, List<String>>str : arr){
+            List<String>anagrams = str.getValue();
+            Collections.sort(anagrams);
+            System.out.printf("%d : ", anagrams.size());
+            for(int i = 0 ; i < anagrams.size() ; i++){
+                System.out.printf("%s ", anagrams.get(i));
+            }
+            System.out.printf("\n");
+        }
         
-// // //     }
-// // // }
+    }
+}
 
 
 // // import java.util.*;
