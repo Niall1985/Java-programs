@@ -1,61 +1,120 @@
+import java.util.Arrays;
 import java.util.*;
-public class Main{
-  public static void main(String[] args){
-    Scanner sc = new Scanner(System.in);
-    String text = sc.next();
-    String key = sc.next();
-    String alphakey = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    int [][]matrix = new int[text.length()][text.length()];
-    int index = 0;
 
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[0].length; j++) {
-          if (index < key.length()) {
-              matrix[i][j] = alphakey.indexOf(key.charAt(index));
-              index++;
-          }
+public class Main {
+   private static final int MOD = 26;
+
+   public static String encryptText(String plaintext, int[][] key) {
+      plaintext = plaintext.toUpperCase().replaceAll(" ", "");
+      int n = key.length;
+      int padding = n - plaintext.length() % n;
+      if (padding != n) {
+         plaintext += "X".repeat(padding);
       }
-    }
-    System.out.println("Key Matrix");
-    for(int i = 0 ; i < text.length() ; i++){
-      for(int j = 0 ; j < text.length() ; j++){
-        System.out.printf("%d ", matrix[i][j]);
+
+      StringBuilder ciphertext = new StringBuilder();
+      for (int i = 0; i < plaintext.length(); i += n) {
+         int[] block = new int[n];
+         for (int j = 0; j < n; j++) {
+            block[j] = plaintext.charAt(i + j) - 'A';
+         }
+         int[] encryptedBlock = multiplyMatrix(key, block);
+         for (int value : encryptedBlock) {
+            ciphertext.append((char) (value + 'A'));
+         }
       }
-      System.out.printf("\n");
-    }
-    System.out.printf("\n");
-    
-    int[][] textmatrix = new int[text.length()][1];
-    for (int i = 0; i < text.length(); i++) {
-        textmatrix[i][0] = alphakey.indexOf(text.charAt(i));
-    }
-    System.out.println("Text Matrix");
-    for (int i = 0; i < text.length(); i++) {
-        System.out.printf("%d\n", textmatrix[i][0]);
-    }
-    System.out.printf("\n");
-    
-    int result[][] = new int[text.length()][1];
-    for(int i = 0 ; i < text.length() ; i++){
-      result[i][0] = 0;
-      for(int j = 0 ; j < text.length() ; j++){
-        result[i][0] += (matrix[i][j] * textmatrix[j][0]);
+      return ciphertext.toString();
+   }
+
+   public static String decryptText(String ciphertext, int[][] key) {
+      int determinant = determinant(key);
+      int adjoint[][] = adjoint(key);
+      int n = key.length;
+      int[][] inverseKey = new int[n][n];
+
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            inverseKey[i][j] = (adjoint[i][j] * determinant) % MOD;
+            if (inverseKey[i][j] < 0) {
+               inverseKey[i][j] += MOD;
+            }
+         }
       }
-      result[i][0] %= 26;
-    }
-    
-    
-    
-    System.out.println("Cipher Matrix");
-    for(int i = 0 ; i < text.length() ; i++){
-      System.out.printf("%d\n", (result[i][0]));
-    }
-    
-    char original[] = new char[text.length()];
-    System.out.println("\nCipher Text");
-    for(int i = 0 ; i < text.length() ; i++){
-      original[i] = alphakey.charAt(result[i][0]);
-    }
-    System.out.print("Encrypted Text: " + new String(original));
-  }
+      return encryptText(ciphertext, inverseKey);
+   }
+
+   private static int[] multiplyMatrix(int[][] key, int[] block) {
+      int n = key.length;
+      int[] result = new int[n];
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            result[i] += key[i][j] * block[j];
+         }
+         result[i] %= MOD;
+      }
+      return result;
+   }
+
+   private static int determinant(int[][] matrix) {
+      if (matrix.length == 1) {
+         return matrix[0][0];
+      }
+      int det = 0;
+      for (int i = 0; i < matrix.length; i++) {
+         int[][] minor = new int[matrix.length - 1][matrix.length - 1];
+         for (int j = 1; j < matrix.length; j++) {
+            for (int k = 0, col = 0; k < matrix.length; k++) {
+               if (k == i) continue;
+               minor[j - 1][col++] = matrix[j][k];
+            }
+         }
+         det += Math.pow(-1, i) * matrix[0][i] * determinant(minor);
+      }
+      return det;
+   }
+
+   private static int[][] adjoint(int[][] matrix) {
+      int n = matrix.length;
+      int[][] adjoint = new int[n][n];
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            int[][] minor = new int[n - 1][n - 1];
+            for (int k = 0, row = 0; k < n; k++) {
+               if (k == i) continue;
+               for (int l = 0, col = 0; l < n; l++) {
+                  if (l == j) continue;
+                  minor[row][col++] = matrix[k][l];
+               }
+               row++;
+            }
+            adjoint[i][j] = (int) Math.pow(-1, i + j) * determinant(minor);
+         }
+      }
+      return transpose(adjoint);
+   }
+
+   private static int[][] transpose(int[][] matrix) {
+      int[][] result = new int[matrix.length][matrix.length];
+      for (int i = 0; i < matrix.length; i++) {
+         for (int j = 0; j < matrix.length; j++) {
+            result[i][j] = matrix[j][i];
+         }
+      }
+      return result;
+   }
+
+   public static void main(String[] args) {
+      Scanner sc = new Scanner(System.in);
+      String plaintext = sc.next();
+      int[][]key = new int[3][3];
+      for(int i = 0 ; i < 3 ; i++){
+        for(int j = 0 ; j < 3 ; j++){
+          key[i][j] = sc.nextInt();
+        }
+      }
+      String ciphertext = encryptText(plaintext, key);
+      System.out.println("The Encrypted Text: " + ciphertext);
+      String decrypted = decryptText(ciphertext, key);
+      System.out.println("The Decrypted Text: " + decrypted);
+   }
 }
