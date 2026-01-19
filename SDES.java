@@ -110,14 +110,20 @@ public class Main {
     }
 
     static int[] encrypt(int[] plaintext, int[] key) {
-        int[][] keys = generateKeys(key);
+    int[][] keys = generateKeys(key);
 
-        int[] ip = permute(plaintext, IP);
-        int[] fk1 = fk(ip, keys[0]);
-        int[] sw = swap(fk1);
-        int[] fk2 = fk(sw, keys[1]);
-        return permute(fk2, IP_INV);
-    }
+    int[] K1 = keys[0];
+    int[] K2 = keys[1];
+    System.out.print("\n");
+    printBits("Round 1 Key (K1)", K1);
+    int[] ip = permute(plaintext, IP);
+    int[] fk1 = fk(ip, K1);
+    int[] sw = swap(fk1);
+    printBits("Round 2 Key (K2)", K2);
+    int[] fk2 = fk(sw, K2);
+    return permute(fk2, IP_INV);
+}
+
     
     static int[] decrypt(int[] ciphertext, int[] key) {
       int[][] keys = generateKeys(key);
@@ -131,6 +137,13 @@ public class Main {
       int[] fk2 = fk(sw, k2);
       return permute(fk2, IP_INV);
     }
+    
+    static void printBits(String label, int[] bits) {
+      System.out.print(label + ": ");
+      for (int b : bits)
+          System.out.print(b);
+      System.out.println();
+  }
 
 
     public static void main(String[] args) {
@@ -142,8 +155,11 @@ public class Main {
     int[] key = keyStr.chars().map(c -> c - '0').toArray();
     int[] pt = ptStr.chars().map(c -> c - '0').toArray();
 
-
+    System.out.println("Plaintext: " + ptStr);
+    System.out.println("Key: " + keyStr);
+    
     int[] cipher = encrypt(pt, key);
+    System.out.print("\n");
     System.out.print("Cipher Text: ");
     for (int b : cipher)
         System.out.print(b);
