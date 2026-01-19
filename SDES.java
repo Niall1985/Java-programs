@@ -118,21 +118,41 @@ public class Main {
         int[] fk2 = fk(sw, keys[1]);
         return permute(fk2, IP_INV);
     }
+    
+    static int[] decrypt(int[] ciphertext, int[] key) {
+      int[][] keys = generateKeys(key);
+  
+      int[] k1 = keys[1];
+      int[] k2 = keys[0];
+  
+      int[] ip = permute(ciphertext, IP);
+      int[] fk1 = fk(ip, k1);
+      int[] sw = swap(fk1);
+      int[] fk2 = fk(sw, k2);
+      return permute(fk2, IP_INV);
+    }
+
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
-      
-        String keyStr = sc.next();
-        String ptStr = sc.next();
+    String keyStr = sc.next();
+    String ptStr = sc.next();
 
-        int[] key = keyStr.chars().map(c -> c - '0').toArray();
-        int[] pt = ptStr.chars().map(c -> c - '0').toArray();
+    int[] key = keyStr.chars().map(c -> c - '0').toArray();
+    int[] pt = ptStr.chars().map(c -> c - '0').toArray();
 
-        int[] cipher = encrypt(pt, key);
 
-        System.out.print("Cipher Text: ");
-        for (int b : cipher)
-            System.out.print(b);
-    }
+    int[] cipher = encrypt(pt, key);
+    System.out.print("Cipher Text: ");
+    for (int b : cipher)
+        System.out.print(b);
+
+ 
+    int[] decrypted = decrypt(cipher, key);
+    System.out.print("\nDecrypted Text: ");
+    for (int b : decrypted)
+        System.out.print(b);
+}
+
 }
