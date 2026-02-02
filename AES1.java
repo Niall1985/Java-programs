@@ -79,3 +79,8 @@ public class AESKeyGeneration {
         System.out.println();
     }
 }
+
+
+
+
+https://github.com/Niall1985/Java-programs/blob/main/AES1.java
