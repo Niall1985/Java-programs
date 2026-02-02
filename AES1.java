@@ -81,6 +81,27 @@ public class AESKeyGeneration {
 }
 
 
+public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
 
+    System.out.print("Enter 16 character key: ");
+    String key = sc.nextLine();
+
+    byte[] round0 = new byte[16];
+    byte[] inputBytes = key.getBytes();
+
+    int len = Math.min(inputBytes.length, 16);
+    System.arraycopy(inputBytes, 0, round0, 0, len);
+
+    System.out.println("\nRound 0 Key (HEX):");
+    printHex(round0);
+
+    byte[] round1 = generateRound1Key(round0);
+
+    System.out.println("\nRound 1 Key (HEX):");
+    printHex(round1);
+
+    sc.close();
+}
 
 https://github.com/Niall1985/Java-programs/blob/main/AES1.java
