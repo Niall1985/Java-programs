@@ -1,17 +1,18 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class MultiPartyDH {
+public class Main {
 
-    public static long modPow(long base, long exponent, long mod) {
+    // Fast modular exponentiation
+    public static long power(long a, long b, long P) {
         long result = 1;
-        base = base % mod;
+        a = a % P;
 
-        while (exponent > 0) {
-            if (exponent % 2 == 1) {
-                result = (result * base) % mod;
-            }
-            exponent = exponent / 2;
-            base = (base * base) % mod;
+        while (b > 0) {
+            if (b % 2 == 1)
+                result = (result * a) % P;
+
+            a = (a * a) % P;
+            b = b / 2;
         }
         return result;
     }
@@ -19,38 +20,40 @@ public class MultiPartyDH {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        int users = sc.nextInt();
+        long P = sc.nextLong();
+        long G = sc.nextLong();
 
-        System.out.print("Enter prime number (p): ");
-        long p = sc.nextLong();
+        long[] privateKey = new long[users];
+        long[] value = new long[users];
 
-        System.out.print("Enter generator (g): ");
-        long g = sc.nextLong();
-
-        System.out.print("Enter number of participants: ");
-        int n = sc.nextInt();
-
-        long[] privateKeys = new long[n];
-        long[] publicKeys = new long[n];
-
-        for (int i = 0; i < n; i++) {
-            System.out.print("Enter secret key for Participant " + (i + 1) + ": ");
-            privateKeys[i] = sc.nextLong();
+        for (int i = 0; i < users; i++) {
+            privateKey[i] = sc.nextLong();
         }
 
-        System.out.println("\nPublic Keys:");
-        for (int i = 0; i < n; i++) {
-            publicKeys[i] = modPow(g, privateKeys[i], p);
-            System.out.println("Participant " + (i + 1) + ": " + publicKeys[i]);
+        for (int i = 0; i < users; i++) {
+            value[i] = G;
+        }
+        
+        for (int round = 0; round < users; round++) {
+
+            long[] newValue = new long[users];
+
+            for (int i = 0; i < users; i++) {
+
+                long computed = power(value[i], privateKey[i], P);
+                System.out.println("Computed keys: " + computed);
+                int nextUser = (i + 1) % users;
+                newValue[nextUser] = computed;
+            }
+
+            value = newValue;
         }
 
-        long exponentProduct = 1;
-        for (int i = 0; i < n; i++) {
-            exponentProduct *= privateKeys[i];
+        System.out.println("\nFinal Shared Keys:");
+        for (int i = 0; i < users; i++) {
+            System.out.println("User " + (i + 1) + ": " + value[i]);
         }
-
-        long sharedKey = modPow(g, exponentProduct, p);
-
-        System.out.println("\nFinal Shared Key for all participants: " + sharedKey);
 
         sc.close();
     }
