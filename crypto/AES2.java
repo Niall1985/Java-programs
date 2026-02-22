@@ -35,27 +35,19 @@ public class AESKeyGeneration {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
-
         String key = sc.nextLine();
-
         byte[] round0 = new byte[16];
         byte[] inputBytes = key.getBytes();
-
         int len = Math.min(inputBytes.length, 16);
+        
         System.arraycopy(inputBytes, 0, round0, 0, len);
-
         System.out.println("\nRound 0 Key (HEX):");
         printHex(round0);
-
         byte[] round1 = generateRound1Key(round0);
-
         System.out.println("\nRound 1 Key (HEX):");
         printHex(round1);
 
-     
         String plaintext = sc.nextLine();
-
         byte[] plainBytes = new byte[16];
         byte[] ptInputBytes = plaintext.getBytes();
         int ptLen = Math.min(ptInputBytes.length, 16);
