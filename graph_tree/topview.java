@@ -9,7 +9,7 @@ class TreeNode{
   }
 }
 
-public class VerticalTraversal{
+public class TopTraversal{
   static TreeNode insert(TreeNode node, int data){
     if(node == null) return new TreeNode(data);
     if(data < node.data) node.left = insert(node.left, data);
@@ -17,7 +17,7 @@ public class VerticalTraversal{
     return node;
   }
   
-  static void verticalTraversal(TreeNode node){
+  static void topTraversal(TreeNode node){
     if(node == null) return;
     
     Queue<TreeNode>q = new LinkedList<>();
@@ -56,6 +56,6 @@ public class VerticalTraversal{
     for(int x : arr){
       node = insert(node, x);
     }
-    verticalTraversal(node);
+    topTraversal(node);
   }
 }
