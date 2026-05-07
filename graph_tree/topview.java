@@ -9,23 +9,42 @@ class TreeNode{
   }
 }
 
-public class TopTraversal{
-  static TreeNode insert(TreeNode node, int data){
-    if(node == null) return new TreeNode(data);
-    if(data < node.data) node.left = insert(node.left, data);
-    else node.right = insert(node.right, data);
-    return node;
+public class Main{
+  static TreeNode insert(TreeNode root, int data){
+    TreeNode newNode = new TreeNode(data);
+    if(root == null){
+      return newNode;
+    }
+    Queue<TreeNode>q = new LinkedList<>();
+    q.add(root);
+    while(!q.isEmpty()){
+      TreeNode curr = q.poll();
+      if(curr.left == null){
+        curr.left = newNode;
+        break;
+      }
+      else{
+        q.add(curr.left);
+      }
+      
+      if(curr.right == null){
+        curr.right = newNode;
+        break;
+      }
+      else{
+        q.add(curr.right);
+      }
+    }
+    return root;
   }
   
-  static void topTraversal(TreeNode node){
-    if(node == null) return;
-    
+  static void topview(TreeNode root){
+    if(root == null) return;
     Queue<TreeNode>q = new LinkedList<>();
     Queue<Integer>hdq = new LinkedList<>();
-    
     TreeMap<Integer, Integer>map = new TreeMap<>();
     
-    q.add(node);
+    q.add(root);
     hdq.add(0);
     
     while(!q.isEmpty()){
@@ -44,18 +63,17 @@ public class TopTraversal{
         hdq.add(hd+1);
       }
     }
+    
     for(int val : map.values()){
       System.out.print(val + " ");
     }
-    
   }
-  
   public static void main(String[] args){
     TreeNode node = null;
     int[] arr = {50, 30, 70, 20, 40, 60, 80};
     for(int x : arr){
       node = insert(node, x);
     }
-    topTraversal(node);
+    topview(node);
   }
 }
