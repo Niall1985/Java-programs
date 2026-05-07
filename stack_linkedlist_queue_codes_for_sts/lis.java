@@ -13,7 +13,7 @@ public class Main{
         if(lis[i] > max) max = lis[i];
       }
       else{
-        lis[i] = lis[i-1]-1;
+        lis[i] = max-1;
       }
     }
     for(int x : lis){
