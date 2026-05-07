@@ -1,95 +1,86 @@
 import java.util.*;
 
-class TreeNode{
-  int data;
-  TreeNode left, right;
-  
-  TreeNode(int data){
-    this.data = data;
-  }
+class TreeNode {
+    int data;
+    TreeNode left, right;
+
+    TreeNode(int data) {
+        this.data = data;
+    }
 }
 
-public class RecoverBST{
+public class Main {
 
-  TreeNode first = null;
-  TreeNode second = null;
-  TreeNode prev = null;
+    static ArrayList<Integer> arr = new ArrayList<>();
 
-  static TreeNode insert(TreeNode root, int data){
-    TreeNode newNode = new TreeNode(data);
+    static TreeNode insert(TreeNode root, int data) {
 
-    if(root == null) return newNode;
+        TreeNode newNode = new TreeNode(data);
 
-    Queue<TreeNode> q = new LinkedList<>();
-    q.add(root);
+        if (root == null)
+            return newNode;
 
-    while(!q.isEmpty()){
-      TreeNode curr = q.poll();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
 
-      if(curr.left == null){
-        curr.left = newNode;
-        break;
-      } else q.add(curr.left);
+        while (!q.isEmpty()) {
 
-      if(curr.right == null){
-        curr.right = newNode;
-        break;
-      } else q.add(curr.right);
+            TreeNode curr = q.poll();
+
+            if (curr.left == null) {
+                curr.left = newNode;
+                break;
+            } else {
+                q.add(curr.left);
+            }
+
+            if (curr.right == null) {
+                curr.right = newNode;
+                break;
+            } else {
+                q.add(curr.right);
+            }
+        }
+
+        return root;
     }
 
-    return root;
-  }
+    static void inorder(TreeNode root) {
 
-  void recoverTree(TreeNode root){
-    inorder(root);
+        if (root == null)
+            return;
 
-    int temp = first.data;
-    first.data = second.data;
-    second.data = temp;
-  }
+        inorder(root.left);
 
-  void inorder(TreeNode root){
-    if(root == null) return;
+        arr.add(root.data);
 
-    inorder(root.left);
-
-    if(prev != null && prev.data > root.data){
-      if(first == null){
-        first = prev;
-      }
-      second = root;
+        inorder(root.right);
     }
 
-    prev = root;
+    public static void main(String[] args) {
 
-    inorder(root.right);
-  }
+        Scanner sc = new Scanner(System.in);
 
-  public void printinorder(TreeNode root){
-    if(root == null) return;
+        TreeNode root = null;
 
-    printinorder(root.left);
-    System.out.print(root.data + " ");
-    printinorder(root.right);
-  }
+        int n = sc.nextInt();
 
-  public static void main(String[] args){
+        for (int i = 0; i < n; i++) {
 
-    TreeNode root = null;
+            String s = sc.next();
 
-    root = insert(root,3);
-    root = insert(root,1);
-    root = insert(root,4);
-    root = insert(root,2);
+            if (!s.equals("null")) {
 
-    RecoverBST obj = new RecoverBST();
+                int x = Integer.parseInt(s);
 
-    System.out.println("Before Recovery:");
-    obj.printinorder(root);
+                root = insert(root, x);
+            }
+        }
 
-    obj.recoverTree(root);
+        inorder(root);
 
-    System.out.println("\nAfter Recovery:");
-    obj.printinorder(root);
-  }
+        Collections.sort(arr);
+
+        System.out.println(arr);
+    }
 }
