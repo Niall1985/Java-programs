@@ -32,3 +32,30 @@ public class Main {
         findAllSubsets(set, sum, n, chosen, n);  // pass n as total
     }
 }
+
+
+
+
+
+import java.util.*;
+
+public class Main {
+  static boolean subsetcheck(int[]set, int sum, int n){
+    if(sum == 0) return true;
+    if(n == 0) return false;
+    if(set[n-1] <= sum){
+      return subsetcheck(set, sum-set[n-1], n-1);
+    } else{
+      return subsetcheck(set, sum, n-1);
+    }
+  }
+    public static void main(String[] args) {
+      int[]arr = {1,2,3,4,5};
+      if(subsetcheck(arr, 5, 5)){
+        System.out.println("YES");
+      }
+      else{
+        System.out.println("NO");
+      }
+    }
+}
