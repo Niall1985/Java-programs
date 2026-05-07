@@ -9,45 +9,62 @@ class TreeNode{
   }
 }
 
-public class BoundaryTraversal{
-  static TreeNode insert(TreeNode node, int data){
-    if(node == null) return new TreeNode(data);
-    if(data < node.data) node.left = insert(node.left, data);
-    else node.right = insert(node.right, data);
-    return node;
+public class Main{
+  static TreeNode insert(TreeNode root, int data){
+    TreeNode newNode = new TreeNode(data);
+    if(root == null) return newNode;
+    
+    Queue<TreeNode>q = new LinkedList<>();
+    q.add(root);
+    while(!q.isEmpty()){
+      TreeNode curr = q.poll();
+      if(curr.left == null){
+        curr.left = newNode;
+        break;
+      } else{
+        q.add(curr.left);
+      }
+      
+      if(curr.right == null){
+        curr.right = newNode;
+        break;
+      } else{
+        q.add(curr.right);
+      }
+    }
+    return root;
   }
   
-  static void boundary(TreeNode node){
-    if(node == null)return;
-    System.out.print(node.data + " ");
-    left(node.left);
-    leaves(node.left);
-    leaves(node.right);
-    right(node.right);
+  static void boundary(TreeNode root){
+    if(root == null) return;
+    System.out.print(root.data + " ");
+    left(root.left);
+    leaves(root.left);
+    leaves(root.right);
+    right(root.right);
+  }
+  static void left(TreeNode root){
+    if(root == null || root.left == null &&  root.right == null) return;
+    System.out.print(root.data + " ");
+    if(root.left != null) left(root.left);
+    else left(root.right);
+  }
+  static void right(TreeNode root){
+    if(root == null || root.right == null &&  root.left == null) return;
+    if(root.right != null) right(root.right);
+    else right(root.left);
+    System.out.print(root.data + " ");
   }
   
-  static void left(TreeNode node){
-    if(node == null || (node.left == null && node.right == null)) return;
-    System.out.print(node.data + " ");
-    if(node.left != null) left(node.left);
-    else left(node.right);
-  }
-  static void right(TreeNode node){
-    if(node == null || (node.left == null && node.right == null)) return;
-    if(node.right != null) right(node.right);
-    else right(node.left);
-    System.out.print(node.data + " ");
-  }
-  static void leaves(TreeNode node){
-    if(node == null) return;
-    if(node.left == null && node.right == null){
-      System.out.print(node.data + " ");
+  static void leaves(TreeNode root){
+    if(root ==null) return;
+    if(root.left == null && root.right == null){
+      System.out.print(root.data + " ");
       return;
     }
-    leaves(node.left);
-    leaves(node.right);
+    leaves(root.left);
+    leaves(root.right);
   }
-  
   public static void main(String[] args){
     TreeNode node = null;
     int[] arr = {50, 30, 70, 20, 40, 60, 80};
