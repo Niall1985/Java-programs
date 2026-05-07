@@ -9,22 +9,41 @@ class TreeNode{
   }
 }
 
-public class LeftViewBST{
-  static TreeNode insert(TreeNode node, int data){
-    if(node == null) return new TreeNode(data);
-    if(data < node.data){
-      node.left = insert(node.left, data);
+public class Main{
+  static TreeNode insert(TreeNode root, int data){
+    TreeNode newNode = new TreeNode(data);
+    if(root == null){
+      return newNode;
     }
-    else{
-      node.right = insert(node.right, data);
+    
+    Queue<TreeNode>q = new LinkedList<>();
+    q.add(root);
+    while(!q.isEmpty()){
+      TreeNode curr = q.poll();
+      if(curr.left == null){
+        curr.left = newNode;
+        break;
+      }
+      else{
+        q.add(curr.left);
+      }
+      
+      if(curr.right == null){
+        curr.right = newNode;
+        break;
+      }
+      else{
+        q.add(curr.right);
+      }
     }
-    return node;
+    return root;
   }
   
-  static void leftView(TreeNode node){
-    if(node == null) return;
-    Queue<TreeNode> q = new LinkedList<>();
-    q.add(node);
+  static void leftview(TreeNode root){
+    if(root == null) return;
+    
+    Queue<TreeNode>q = new LinkedList<>();
+    q.add(root);
     while(!q.isEmpty()){
       int size = q.size();
       for(int i = 0 ; i < size ; i++){
@@ -37,12 +56,14 @@ public class LeftViewBST{
       }
     }
   }
+  
   public static void main(String[] args){
     TreeNode node = null;
     int[] arr = {50, 30, 70, 20, 40, 60, 80};
     for(int x : arr){
       node = insert(node, x);
     }
-    leftView(node);
+    leftview(node);
   }
+  
 }
