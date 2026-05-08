@@ -44,3 +44,48 @@ public class Main{
 2 3 4 
 
 YES
+
+
+
+
+
+
+import java.util.*;
+
+public class Main {
+
+    static boolean findsubs(int[] set, int sum, int n) {
+
+        // Subset found
+        if (sum == 0)
+            return true;
+
+        // No elements left
+        if (n == 0)
+            return false;
+
+        // Include or Exclude
+        if (set[n - 1] <= sum) {
+
+            return findsubs(set, sum - set[n - 1], n - 1)
+                || findsubs(set, sum, n - 1);
+        }
+
+        // Skip current element
+        return findsubs(set, sum, n - 1);
+    }
+
+    public static void main(String[] args) {
+
+        int[] set = {1, 2, 3, 4, 5, 6};
+
+        int sum = 9;
+
+        boolean found = findsubs(set, sum, set.length);
+
+        if (found)
+            System.out.println("YES");
+        else
+            System.out.println("NO");
+    }
+}
